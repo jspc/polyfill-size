@@ -13,15 +13,25 @@ import (
 )
 
 var (
+	url string
+
 	features    = flag.String("features", "default,fetch,includes,HTMLPictureElement,Array.prototype.entries,Object.assign", "'Features' string to request a polyfil for/from")
 	agents      = flag.String("agents", "./agents.txt", "Path to file containing useragents to test")
 	concurrency = flag.Int("concurrency", 50, "Number of downloads to run at once")
+	minify      = flag.Bool("min", true, "Download minified version")
 
 	httpAgent = &http.Client{}
 )
 
 func main() {
 	flag.Parse()
+	url = func() string {
+		if *minify {
+			return fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.min.js?features=%s", *features)
+		} else {
+			return fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.js?features=%s", *features)
+		}
+	}()
 
 	log.Print("Starting")
 
@@ -73,7 +83,7 @@ func main() {
 }
 
 func grab(s string) error {
-	req, err := http.NewRequest("GET", fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.js?features=%s", *features), nil)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
 	}
