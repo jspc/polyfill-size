@@ -22,13 +22,15 @@ running
 
 ```bash
 $ polyfill-size -h
-Usage of ./polyfil-size:
+Usage of ./polyfill-size:
   -agents string
         Path to file containing useragents to test (default "./agents.txt")
   -concurrency int
         Number of downloads to run at once (default 50)
   -features string
         'Features' string to request a polyfil for/from (default "default,fetch,includes,HTMLPictureElement,Array.prototype.entries,Object.assign")
+  -min
+        Download minified version (default true)
 ```
 
 licence
