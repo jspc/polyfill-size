@@ -28,9 +28,8 @@ func main() {
 	url = func() string {
 		if *minify {
 			return fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.min.js?features=%s", *features)
-		} else {
-			return fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.js?features=%s", *features)
 		}
+		return fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.js?features=%s", *features)
 	}()
 
 	log.Print("Starting")
