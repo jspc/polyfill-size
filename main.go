@@ -16,6 +16,8 @@ var (
 	features    = flag.String("features", "default,fetch,includes,HTMLPictureElement,Array.prototype.entries,Object.assign", "'Features' string to request a polyfil for/from")
 	agents      = flag.String("agents", "./agents.txt", "Path to file containing useragents to test")
 	concurrency = flag.Int("concurrency", 50, "Number of downloads to run at once")
+
+	httpAgent = &http.Client{}
 )
 
 func main() {
@@ -71,8 +73,6 @@ func main() {
 }
 
 func grab(s string) error {
-	client := &http.Client{}
-
 	req, err := http.NewRequest("GET", fmt.Sprintf("https://cdn.polyfill.io/v2/polyfill.js?features=%s", *features), nil)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func grab(s string) error {
 
 	req.Header.Set("User-Agent", s)
 
-	resp, err := client.Do(req)
+	resp, err := httpAgent.Do(req)
 	if err != nil {
 		return err
 	}
